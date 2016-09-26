@@ -72,6 +72,11 @@ angular
                     scope.$apply(function()
                     {
                         scope.playerScore += 1;
+
+                        if (scope.playerScore > 10)
+                        {
+                            scope.playerWin = true;
+                        }
                     });
                 }
                 else if (this.x > boardWidth) // point scored - reset ball
@@ -84,6 +89,11 @@ angular
                     scope.$apply(function()
                     {
                         scope.computerScore += 1;
+
+                        if (scope.computerScore > 10)
+                        {
+                            scope.computerWin = true;
+                        }
                     });
                 }
 
@@ -217,6 +227,8 @@ angular
                 {
                     scope.playerScore   = 0;
                     scope.computerScore = 0;
+                    scope.playerWin     = false;
+                    scope.computerWin   = false;
 
                     var canvas      = element[0],
                         context     = canvas.getContext("2d"),
@@ -235,7 +247,6 @@ angular
                         ball.render(context);
                     };
 
-                    renderBoard();
 
                     var update = function()
                     {
@@ -247,9 +258,12 @@ angular
 
                     var step = function()
                     {
-                        update();
-                        renderBoard();
-                        animate(step);
+                        if (scope.playerScore < 11 && scope.computerScore < 11)
+                        {
+                            update();
+                            renderBoard();
+                            animate(step);
+                        }
                     };
 
                     step(); //-------------------------------------------------- ToDo: Trigger with button
