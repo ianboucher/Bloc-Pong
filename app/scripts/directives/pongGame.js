@@ -69,7 +69,10 @@ angular
                     this.x = boardWidth / 2;
                     this.y = boardHeight / 2;
 
-                    scope.$emit("playerScore")
+                    scope.$apply(function()
+                    {
+                        scope.playerScore += 1;
+                    });
                 }
                 else if (this.x > boardWidth) // point scored - reset ball
                 {
@@ -78,7 +81,10 @@ angular
                     this.x = boardWidth / 2;
                     this.y = boardHeight / 2;
 
-                    scope.$emit("computerScore")
+                    scope.$apply(function()
+                    {
+                        scope.computerScore += 1;
+                    });
                 }
 
                 if (this.x > boardWidth / 2) // ball is in player's half
@@ -205,10 +211,13 @@ angular
                 "templateUrl" : "templates/directives/pong_game.html",
                 "replace"     : true,
                 "restrict"    : "EAC",
-                "scope"       : { },
+                // "scope"       : { },
 
                 link: function(scope, element, attributes)
                 {
+                    scope.playerScore   = 0;
+                    scope.computerScore = 0;
+
                     var canvas      = element[0],
                         context     = canvas.getContext("2d"),
                         boardWidth  = canvas.width  = 500, // Todo: Resize canvas according to window size
