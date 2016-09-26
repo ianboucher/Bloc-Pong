@@ -33,7 +33,7 @@ angular
                 context.fill();
             }
 
-            Ball.prototype.update = function(paddle1, paddle2, boardWidth, boardHeight)
+            Ball.prototype.update = function(paddle1, paddle2, boardWidth, boardHeight, scope)
             {
                 this.x += this.xSpeed;
                 this.y += this.ySpeed;
@@ -62,12 +62,23 @@ angular
                     this.ySpeed = -this.ySpeed;
                 }
 
-                if (this.x < 0 || this.x > boardWidth) // point scored - reset ball
+                if (this.x < 0) // point scored - reset ball
                 {
                     this.xSpeed = 3;
                     this.ySpeed = 0;
                     this.x = boardWidth / 2;
                     this.y = boardHeight / 2;
+
+                    scope.$emit("playerScore")
+                }
+                else if (this.x > boardWidth) // point scored - reset ball
+                {
+                    this.xSpeed = -3;
+                    this.ySpeed = 0;
+                    this.x = boardWidth / 2;
+                    this.y = boardHeight / 2;
+
+                    scope.$emit("computerScore")
                 }
 
                 if (this.x > boardWidth / 2) // ball is in player's half
@@ -221,7 +232,7 @@ angular
                     {
                         player.update(keysDown, boardHeight);
                         computer.update(ball, boardHeight);
-                        ball.update(computer.paddle, player.paddle, boardWidth, boardHeight);
+                        ball.update(computer.paddle, player.paddle, boardWidth, boardHeight, scope);
                     };
 
 
